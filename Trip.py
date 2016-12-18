@@ -1,8 +1,6 @@
 from bs4 import BeautifulSoup
 import requests
 
-print('Hello')
-
 url = 'http://www.tripadvisor.cn/Attractions-g60763-Activities-oa30-New_York_City_New_York.html'
 
 web_data = requests.get(url)
