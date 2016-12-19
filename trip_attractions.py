@@ -6,26 +6,31 @@
 
 from bs4 import BeautifulSoup
 import requests
+import time
 
 url = 'http://www.tripadvisor.cn/Attractions-g60763-Activities-oa30-New_York_City_New_York.html'
 
-web_data = requests.get(url)
+urls = ['http://www.tripadvisor.cn/Attractions-g60763-Activities-oa{}-New_York_City_New_York.html'.format(str(i)) for i in range(30,930,30)]
 
-soup = BeautifulSoup(web_data.text,'lxml')
+def get_attractions(url,data=None):
+    web_data = requests.get(url)
+    soup = BeautifulSoup(web_data.text, 'lxml')
 
-# a[target="_blank"] 是为了将带数字的标题过滤掉
-titles = soup.select('div.property_title > a[target="_blank"]')
-# img[width=160] 也是通过图片的特征 将多个图片 过滤掉
-imgs = soup.select('img[width=160]')
+    # a[target="_blank"] 是为了将带数字的标题过滤掉
+    titles = soup.select('div.property_title > a[target="_blank"]')
+    # img[width=160] 也是通过图片的特征 将多个图片 过滤掉
+    imgs = soup.select('img[width=160]')
 
-cates = soup.select('div.p13n_reasoning_v2')
+    cates = soup.select('div.p13n_reasoning_v2')
 
+    for title, img, cate in zip(titles, imgs, cates):
+        data = {
+            'title': title.get_text(),
+            'img': img.get('src'),
+            'cate': list(cate.stripped_strings),
+        }
+        print(data)
 
-for title,img,cate in zip(titles,imgs,cates):
-
-    data = {
-        'title':title.get_text(),
-        'img': img.get('src'),
-        'cate':list(cate.stripped_strings),
-    }
-    print(data)
+for single_url in urls:
+    get_attractions(single_url)
+    time.sleep(2)
