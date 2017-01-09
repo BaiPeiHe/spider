@@ -73,7 +73,7 @@ def get_item_info(url):
 
 #  转转
 # 有原价
-get_item_info('http://zhuanzhuan.58.com/detail/799547182400176135z.shtml')
+# get_item_info('http://zhuanzhuan.58.com/detail/799547182400176135z.shtml')
 
 # 无原价
 # get_item_info('http://zhuanzhuan.58.com/detail/816976264910028804z.shtml')
